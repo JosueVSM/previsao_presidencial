@@ -1,0 +1,779 @@
+<title>Rede Neural Eleitoral 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<style>
+  :root {
+    --papel:    #EFF2F6;
+    --sup:      #FFFFFF;
+    --sup-2:    #F7F9FB;
+    --tinta:    #111823;
+    --apoio:    #5A6775;
+    --fio:      #D3DAE3;
+    --fio-forte:#B9C3CF;
+    --acento:   #1F4E79;
+    --acento-fr:#E4EDF6;
+    --ocre:     #8A5A00;
+    --ocre-fr:  #FAF2E0;
+    --alerta:   #A6362F;
+    --alerta-fr:#FAEBEA;
+    --verde:    #2F6B4F;
+
+    --serif: "Spectral", Georgia, "Times New Roman", serif;
+    --sans:  "Public Sans", "Segoe UI", Helvetica, Arial, sans-serif;
+    --mono:  "IBM Plex Mono", "Cascadia Mono", Consolas, monospace;
+
+    --col: 68ch;
+    --trilho: 5.5rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --papel:    #0E131A;
+      --sup:      #161D26;
+      --sup-2:    #1B232E;
+      --tinta:    #E6EBF1;
+      --apoio:    #9AA7B4;
+      --fio:      #283341;
+      --fio-forte:#3A4857;
+      --acento:   #7FB2DF;
+      --acento-fr:#14293C;
+      --ocre:     #D9A441;
+      --ocre-fr:  #2C2415;
+      --alerta:   #E2857D;
+      --alerta-fr:#2E1B19;
+      --verde:    #7FBE9C;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --papel:    #0E131A;
+    --sup:      #161D26;
+    --sup-2:    #1B232E;
+    --tinta:    #E6EBF1;
+    --apoio:    #9AA7B4;
+    --fio:      #283341;
+    --fio-forte:#3A4857;
+    --acento:   #7FB2DF;
+    --acento-fr:#14293C;
+    --ocre:     #D9A441;
+    --ocre-fr:  #2C2415;
+    --alerta:   #E2857D;
+    --alerta-fr:#2E1B19;
+    --verde:    #7FBE9C;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--papel);
+    color: var(--tinta);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .folha {
+    max-width: calc(var(--col) + var(--trilho) + 7rem);
+    margin: 0 auto;
+    padding: 3.5rem 1.5rem 6rem;
+  }
+
+  /* ---------- cabeçalho ---------- */
+  .capa { border-bottom: 2px solid var(--tinta); padding-bottom: 2rem; margin-bottom: 3.5rem; }
+
+  .orgao {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--acento);
+    margin: 0 0 1.25rem;
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: clamp(2rem, 5.5vw, 3.1rem);
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+    margin: 0 0 0.75rem;
+  }
+
+  .subtitulo {
+    font-family: var(--serif);
+    font-size: clamp(1.05rem, 2.4vw, 1.3rem);
+    font-weight: 400;
+    color: var(--apoio);
+    max-width: 58ch;
+    text-wrap: balance;
+    margin: 0 0 2rem;
+  }
+
+  .ficha {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: 1.25rem 2rem;
+    font-size: 0.875rem;
+  }
+  .ficha dt {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--apoio);
+    margin-bottom: 0.2rem;
+  }
+  .ficha dd { margin: 0; font-weight: 500; }
+
+  /* ---------- seções com trilho numerado ---------- */
+  section { margin-bottom: 3.25rem; }
+
+  .cab-sec {
+    display: grid;
+    grid-template-columns: var(--trilho) minmax(0, 1fr);
+    align-items: baseline;
+    gap: 0 1.5rem;
+    border-top: 1px solid var(--fio-forte);
+    padding-top: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+  .num {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--acento);
+    letter-spacing: 0.06em;
+  }
+  h2 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: clamp(1.3rem, 3vw, 1.65rem);
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  .corpo { display: grid; grid-template-columns: var(--trilho) minmax(0, 1fr); gap: 0 1.5rem; }
+  .corpo > * { grid-column: 2; }
+  .corpo > .larga { grid-column: 1 / -1; }
+
+  @media (max-width: 680px) {
+    .cab-sec, .corpo { grid-template-columns: 1fr; gap: 0.35rem 0; }
+    .corpo > *, .corpo > .larga { grid-column: 1; }
+  }
+
+  p { margin: 0 0 1.1rem; max-width: var(--col); }
+  .corpo > p:last-child { margin-bottom: 0; }
+
+  h3 {
+    font-family: var(--sans);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    margin: 1.9rem 0 0.7rem;
+  }
+
+  a { color: var(--acento); text-underline-offset: 0.18em; }
+  a:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--acento);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  strong { font-weight: 600; }
+  code, .mono { font-family: var(--mono); font-size: 0.86em; }
+  code {
+    background: var(--sup-2);
+    border: 1px solid var(--fio);
+    border-radius: 3px;
+    padding: 0.08em 0.34em;
+  }
+
+  ul, ol { margin: 0 0 1.1rem; padding-left: 1.3rem; max-width: var(--col); }
+  li { margin-bottom: 0.45rem; }
+  li::marker { color: var(--apoio); }
+
+  /* ---------- fórmula ---------- */
+  .formula {
+    background: var(--sup);
+    border: 1px solid var(--fio);
+    border-left: 3px solid var(--acento);
+    padding: 1.1rem 1.3rem;
+    margin: 0 0 1.3rem;
+    font-family: var(--mono);
+    font-size: 0.92rem;
+    line-height: 1.75;
+    overflow-x: auto;
+    max-width: var(--col);
+  }
+  .formula .leg {
+    display: block;
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    color: var(--apoio);
+    margin-top: 0.6rem;
+    line-height: 1.55;
+  }
+
+  /* ---------- diagrama ---------- */
+  figure { margin: 0 0 1.4rem; }
+  figcaption {
+    font-size: 0.8rem;
+    color: var(--apoio);
+    margin-top: 0.7rem;
+    max-width: var(--col);
+    line-height: 1.55;
+  }
+  .quadro-svg {
+    background: var(--sup);
+    border: 1px solid var(--fio);
+    border-radius: 4px;
+    padding: 1.25rem 0.75rem;
+    overflow-x: auto;
+  }
+  .quadro-svg svg { display: block; min-width: 640px; margin: 0 auto; }
+
+  .d-caixa  { fill: var(--sup-2); stroke: var(--fio-forte); }
+  .d-rede   { fill: var(--acento-fr); stroke: var(--acento); }
+  .d-saida  { fill: none; stroke: var(--acento); }
+  .d-txt    { fill: var(--tinta); font-family: var(--sans); font-size: 12px; }
+  .d-mono   { fill: var(--tinta); font-family: var(--mono); font-size: 11.5px; }
+  .d-rotulo { fill: var(--apoio); font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.08em; }
+  .d-ac     { fill: var(--acento); font-family: var(--mono); font-size: 11.5px; font-weight: 500; }
+  .d-seta   { stroke: var(--fio-forte); fill: none; }
+
+  /* ---------- tabelas ---------- */
+  .rolagem { overflow-x: auto; margin: 0 0 0.8rem; border: 1px solid var(--fio); border-radius: 4px; background: var(--sup); }
+  table { border-collapse: collapse; width: 100%; font-size: 0.83rem; font-variant-numeric: tabular-nums; }
+  caption {
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--apoio);
+    padding: 0.85rem 0.9rem 0.6rem;
+  }
+  th, td { padding: 0.5rem 0.9rem; text-align: right; white-space: nowrap; border-bottom: 1px solid var(--fio); }
+  th:first-child, td:first-child { text-align: left; }
+  th {
+    font-family: var(--mono);
+    font-weight: 500;
+    font-size: 0.68rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--apoio);
+    border-bottom: 1px solid var(--fio-forte);
+    vertical-align: bottom;
+    white-space: normal;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: var(--sup-2); }
+  td.num-cel { font-family: var(--mono); }
+  .melhor { color: var(--verde); font-weight: 600; }
+  .ruim   { color: var(--alerta); font-weight: 600; }
+  .grupo td { background: var(--sup-2); font-weight: 600; font-size: 0.78rem; letter-spacing: 0.04em; }
+
+  /* ---------- notas ---------- */
+  .nota {
+    border: 1px solid var(--fio);
+    border-left: 3px solid var(--ocre);
+    background: var(--ocre-fr);
+    padding: 1rem 1.2rem;
+    margin: 0 0 1.3rem;
+    max-width: var(--col);
+    font-size: 0.9rem;
+  }
+  .nota.grave { border-left-color: var(--alerta); background: var(--alerta-fr); }
+  .nota p:last-child { margin-bottom: 0; }
+  .nota .rot {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ocre);
+    margin-bottom: 0.4rem;
+  }
+  .nota.grave .rot { color: var(--alerta); }
+
+  /* ---------- lista de variáveis ---------- */
+  .vars { display: grid; gap: 0; margin: 0 0 1.3rem; border-top: 1px solid var(--fio); max-width: var(--col); }
+  .var-lin {
+    display: grid;
+    grid-template-columns: minmax(10rem, 15rem) minmax(0, 1fr);
+    gap: 0.25rem 1.2rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--fio);
+    font-size: 0.87rem;
+  }
+  .var-lin .k { font-family: var(--mono); font-size: 0.78rem; color: var(--acento); word-break: break-word; }
+  .var-lin .v { color: var(--apoio); }
+  @media (max-width: 560px) { .var-lin { grid-template-columns: 1fr; } }
+
+  /* ---------- números de destaque ---------- */
+  .placar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: 1px;
+    background: var(--fio);
+    border: 1px solid var(--fio);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0 0 1.4rem;
+  }
+  .placar div { background: var(--sup); padding: 0.9rem 1rem; }
+  .placar .n { font-family: var(--mono); font-size: 1.35rem; font-weight: 500; line-height: 1.2; letter-spacing: -0.02em; }
+  .placar .r { font-size: 0.75rem; color: var(--apoio); margin-top: 0.2rem; line-height: 1.4; }
+
+  details {
+    border: 1px solid var(--fio);
+    border-radius: 4px;
+    background: var(--sup);
+    padding: 0.7rem 1rem;
+    margin: 0 0 1.3rem;
+    max-width: var(--col);
+    font-size: 0.88rem;
+  }
+  summary { cursor: pointer; font-weight: 500; }
+  details[open] summary { margin-bottom: 0.7rem; }
+
+  pre {
+    background: var(--sup);
+    border: 1px solid var(--fio);
+    border-radius: 4px;
+    padding: 0.9rem 1.1rem;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    line-height: 1.6;
+    margin: 0 0 1.3rem;
+    max-width: var(--col);
+  }
+  pre code { background: none; border: none; padding: 0; font-size: inherit; }
+
+  .rodape {
+    border-top: 2px solid var(--tinta);
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    font-size: 0.82rem;
+    color: var(--apoio);
+    max-width: var(--col);
+  }
+  .rodape p { max-width: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+
+<div class="folha">
+
+  <header class="capa">
+    <p class="orgao">Documentação técnica &middot; Estimativa experimental</p>
+    <h1>Como construímos a rede neural</h1>
+    <p class="subtitulo">Uma MLP com softmax por município que estima a porcentagem de votos válidos de
+      cada candidato à Presidência, treinada só com eleições anteriores.</p>
+    <dl class="ficha">
+      <div><dt>Alunos</dt><dd>Josué de Vasconcelos Silveira<br>Plinio Rodrigues</dd></div>
+      <div><dt>Matrículas</dt><dd class="mono">2517534<br>2526504</dd></div>
+      <div><dt>Fonte dos dados</dt><dd>TSE — Portal de Dados Abertos</dd></div>
+      <div><dt>Eleições usadas</dt><dd>1998 a 2022 &middot; alvo 2026</dd></div>
+    </dl>
+  </header>
+
+  <section>
+    <div class="cab-sec"><span class="num">01</span><h2>O que a rede tem de responder</h2></div>
+    <div class="corpo">
+      <p>A pergunta não é “quem ganha”. É, para <strong>cada município do Brasil</strong>, qual fatia
+        dos votos válidos cada candidato recebe. Um resultado nacional sai depois, somando os
+        municípios com o peso certo.</p>
+      <p>Chamamos de <strong>disputa</strong> cada combinação de eleição, turno e município. Dentro de
+        uma disputa há uma linha por candidato. A rede recebe uma disputa inteira de uma vez e
+        devolve porcentagens que somam exatamente 100% ali dentro.</p>
+      <div class="placar larga">
+        <div><div class="n">73.827</div><div class="r">disputas (eleição × turno × município)</div></div>
+        <div><div class="n">441.789</div><div class="r">linhas município × candidato</div></div>
+        <div><div class="n">7</div><div class="r">eleições presidenciais lidas</div></div>
+        <div><div class="n">25</div><div class="r">variáveis de entrada</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="cab-sec"><span class="num">02</span><h2>Os dados, e só os oficiais</h2></div>
+    <div class="corpo">
+      <p>Tudo vem do CDN do Tribunal Superior Eleitoral: cerca de 2,3 GB de arquivos <code>.zip</code>,
+        um por eleição, que descompactados passam de 15 GB. Cada <code>.zip</code> traz um CSV por UF e
+        um arquivo <code>_BRASIL</code> com tudo — lemos só o nacional, para não contar voto em dobro.</p>
+      <ul>
+        <li><strong>Votação nominal por município e zona</strong> — 1998 a 2022, os dois turnos. É o alvo.</li>
+        <li><strong>Detalhe da apuração</strong> — aptos e comparecimento por zona.</li>
+        <li><strong>Candidaturas 2026</strong> — quem está na urna.</li>
+        <li><strong>Perfil do eleitorado 2026</strong> — 158.745.463 eleitores em 5.757 municípios e postos no exterior.</li>
+        <li><strong>Registro de pesquisas 2026</strong> — 1.283 registros, <em>sem</em> os percentuais (o TSE não os publica).</li>
+      </ul>
+      <p>Todo arquivo baixado fica registrado em <code>dados/fontes.json</code> com endereço, data de
+        acesso, período coberto, colunas usadas e hash SHA-256 — para que qualquer número desta
+        página possa ser rastreado até o arquivo que o produziu.</p>
+
+      <div class="nota">
+        <span class="rot">O TSE muda os nomes das colunas</span>
+        <p>A leitura precisou de três ajustes reais. O cabeçalho dos arquivos de votação começa com
+          <code>ANO_ELEICAO</code>, mas o perfil do eleitorado e as pesquisas usam <code>AA_ELEICAO</code>;
+          em 2026 a contagem de eleitores deixou de se chamar <code>QT_ELEITORES_PERFIL</code> e virou
+          <code>QT_ELEITORES</code>; e o tamanho da amostra das pesquisas virou <code>QT_ENTREVISTADO</code>,
+          no singular. Hoje o cabeçalho é reconhecido pela <em>forma</em> dos campos — todos
+          identificadores em maiúsculas — e não por um nome fixo.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="cab-sec"><span class="num">03</span><h2>Da urna para a tabela</h2></div>
+    <div class="corpo">
+      <p>Os votos chegam por zona eleitoral; somamos as zonas para obter o município. Filtramos
+        <code>CD_CARGO = 1</code> (Presidente) e apenas eleições ordinárias. Então, para cada disputa:</p>
+      <div class="formula">
+        pct_validos(c) = 100 × votos_válidos(c) ÷ Σ<sub>k</sub> votos_válidos(k)
+        <span class="leg">A soma percorre todos os candidatos da disputa. Brancos e nulos ficam de
+          fora — é a definição de voto válido do próprio TSE.</span>
+      </div>
+      <p>Dois detalhes que dão trabalho entre eleições. <strong>Candidatos</strong> são identificados pelo
+        nome civil normalizado (sem acento, maiúsculas), que é estável — número e sequencial mudam a
+        cada pleito. <strong>Partidos</strong> são mapeados para uma <em>linhagem</em>: PMDB vira MDB,
+        PFL vira DEM vira UNIÃO, PR vira PL. Assim o desempenho anterior de um partido continua sendo
+        encontrado depois de fusão ou troca de nome.</p>
+      <p>A conferência que importa: recalculamos os totais nacionais das treze disputas e comparamos
+        com o resultado oficial. Todas batem com diferença menor que 0,005 ponto percentual — Lula
+        48,43% em 2022, Bolsonaro 46,03% em 2018, Dilma 41,59% em 2014, e assim por diante.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="cab-sec"><span class="num">04</span><h2>As 25 entradas</h2></div>
+    <div class="corpo">
+      <p>A rede <strong>não</strong> recebe o nome do candidato nem um indicador de partido. Se recebesse,
+        não saberia o que fazer com um candidato novo — e todo pleito traz candidatos novos. Cada
+        linha é descrita por desempenho passado e contexto:</p>
+
+      <h3>Do partido, pela linhagem (7 variáveis)</h3>
+      <div class="vars">
+        <div class="var-lin"><span class="k">partido_ant_mun_1t</span><span class="v">fatia do partido naquele município no 1º turno anterior</span></div>
+        <div class="var-lin"><span class="k">partido_ant_uf_1t</span><span class="v">a mesma fatia, no estado</span></div>
+        <div class="var-lin"><span class="k">partido_ant_br_1t</span><span class="v">a mesma fatia, no Brasil</span></div>
+        <div class="var-lin"><span class="k">log_partido_ant_mun_1t</span><span class="v">logaritmo da fatia municipal, para dar resolução aos partidos pequenos</span></div>
+        <div class="var-lin"><span class="k">partido_concorreu_ant</span><span class="v">0 ou 1 — distingue “zero voto” de “não concorreu”</span></div>
+        <div class="var-lin"><span class="k">partido_ant_mun_2t</span><span class="v">fatia no 2º turno anterior</span></div>
+        <div class="var-lin"><span class="k">partido_no_2t_ant</span><span class="v">0 ou 1 — chegou ao 2º turno</span></div>
+      </div>
+
+      <h3>Do próprio candidato (6 variáveis)</h3>
+      <div class="vars">
+        <div class="var-lin"><span class="k">cand_ant_mun_1t</span><span class="v">fatia dele mesmo naquele município</span></div>
+        <div class="var-lin"><span class="k">cand_ant_br_1t</span><span class="v">fatia dele mesmo no país</span></div>
+        <div class="var-lin"><span class="k">cand_concorreu_ant</span><span class="v">disputou a eleição anterior</span></div>
+        <div class="var-lin"><span class="k">cand_concorreu_alguma_vez</span><span class="v">disputou alguma anterior</span></div>
+        <div class="var-lin"><span class="k">cand_eleito_ant</span><span class="v">foi eleito na anterior — é a reeleição</span></div>
+        <div class="var-lin"><span class="k">partido_do_eleito_ant</span><span class="v">é o partido de quem venceu</span></div>
+      </div>
+
+      <h3>Do município, iguais para todos da disputa (12 variáveis)</h3>
+      <div class="vars">
+        <div class="var-lin"><span class="k">segundo_turno</span><span class="v">0 ou 1</span></div>
+        <div class="var-lin"><span class="k">n_candidatos</span><span class="v">quantos disputam</span></div>
+        <div class="var-lin"><span class="k">log_eleitorado</span><span class="v">tamanho do município</span></div>
+        <div class="var-lin"><span class="k">comparecimento_ant</span><span class="v">comparecimento na eleição anterior</span></div>
+        <div class="var-lin"><span class="k">fragmentacao_ant</span><span class="v">número efetivo de candidatos, 1 ÷ Σ fatia²</span></div>
+        <div class="var-lin"><span class="k">sem_historico_mun</span><span class="v">município criado depois — usa o valor do estado</span></div>
+        <div class="var-lin"><span class="k">regiao_N … regiao_EXT</span><span class="v">seis indicadores de região, incluindo o exterior</span></div>
+      </div>
+
+      <p>Todas passam por padronização z-score com média e desvio calculados <strong>só no conjunto de
+        treino</strong> — nunca no de teste.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="cab-sec"><span class="num">05</span><h2>Nada do futuro entra</h2></div>
+    <div class="corpo">
+      <p>Para estimar a eleição do ano <span class="mono">T</span>, as entradas usam apenas: os
+        resultados de <span class="mono">T − 4</span> e anteriores, a lista de candidatos de
+        <span class="mono">T</span> e o eleitorado apto de <span class="mono">T</span> — cadastro
+        fechado meses antes do pleito. Os votos de <span class="mono">T</span> servem só de alvo.</p>
+      <p>Isso é defendido por código, não por disciplina. A função que carrega os dados descarta
+        qualquer linha de 2026 antes de montar as entradas; a previsão só prossegue se o alvo estiver
+        inteiramente ausente; e um teste automático embaralha os votos da eleição-alvo e exige que
+        <em>nenhuma</em> entrada mude.</p>
+      <pre><code>a = features.montar(ctx, 2018, 1)
+res2.loc[res2.ano == 2018, "votos"] *= rng.uniform(0.1, 3)   # bagunça o alvo
+b = features.montar(ctx2, 2018, 1)
+
+assert_frame_equal(a[entradas], b[entradas])   # entradas idênticas
+assert not np.allclose(a["y"], b["y"])         # só o alvo mudou</code></pre>
+    </div>
+  </section>
+
+  <section>
+    <div class="cab-sec"><span class="num">06</span><h2>A arquitetura, e a ideia central</h2></div>
+    <div class="corpo">
+      <p>A rede é uma MLP pequena: <span class="mono">25 → 64 → 32 → 1</span>, com ReLU e dropout de
+        0,10 entre as camadas. Ela devolve <strong>uma pontuação escalar por candidato</strong>, e os
+        mesmos pesos são aplicados a todos os candidatos.</p>
+      <p>O que transforma isso em porcentagem é o passo seguinte: um <strong>softmax restrito à
+        disputa</strong>. As pontuações dos candidatos de um município competem entre si, e só entre
+        si.</p>
+
+      <figure class="larga">
+        <div class="quadro-svg">
+          <svg viewBox="0 0 860 280" role="img" aria-label="Diagrama: as entradas de cada candidato passam pela mesma MLP, produzindo uma pontuação; o softmax restrito ao município converte as pontuações em porcentagens que somam 100%.">
+            <text class="d-rotulo" x="16" y="22">UMA DISPUTA = MUNICÍPIO × TURNO</text>
+
+            <rect class="d-caixa" x="16" y="38" width="196" height="200" rx="4" stroke-width="1"/>
+            <text class="d-txt" x="30" y="60" font-weight="600">Juazeiro do Norte, CE</text>
+
+            <rect class="d-caixa" x="30" y="74" width="168" height="40" rx="3" stroke-width="1"/>
+            <text class="d-mono" x="42" y="90">candidato A</text>
+            <text class="d-rotulo" x="42" y="105">25 VARIÁVEIS</text>
+
+            <rect class="d-caixa" x="30" y="122" width="168" height="40" rx="3" stroke-width="1"/>
+            <text class="d-mono" x="42" y="138">candidato B</text>
+            <text class="d-rotulo" x="42" y="153">25 VARIÁVEIS</text>
+
+            <rect class="d-caixa" x="30" y="170" width="168" height="40" rx="3" stroke-width="1"/>
+            <text class="d-mono" x="42" y="186">candidato C</text>
+            <text class="d-rotulo" x="42" y="201">25 VARIÁVEIS</text>
+
+            <path class="d-seta" d="M212 94 H 270" stroke-width="1.2"/>
+            <path class="d-seta" d="M212 142 H 270" stroke-width="1.2"/>
+            <path class="d-seta" d="M212 190 H 270" stroke-width="1.2"/>
+
+            <rect class="d-rede" x="276" y="74" width="150" height="136" rx="4" stroke-width="1.4"/>
+            <text class="d-txt" x="351" y="124" text-anchor="middle" font-weight="600">a MESMA MLP</text>
+            <text class="d-mono" x="351" y="146" text-anchor="middle">25 - 64 - 32 - 1</text>
+            <text class="d-rotulo" x="351" y="166" text-anchor="middle">PESOS COMPARTILHADOS</text>
+
+            <path class="d-seta" d="M426 94 H 486" stroke-width="1.2"/>
+            <path class="d-seta" d="M426 142 H 486" stroke-width="1.2"/>
+            <path class="d-seta" d="M426 190 H 486" stroke-width="1.2"/>
+
+            <text class="d-rotulo" x="492" y="62">PONTUAÇÃO</text>
+            <text class="d-mono" x="492" y="98">s(A) = 2,10</text>
+            <text class="d-mono" x="492" y="146">s(B) = 1,45</text>
+            <text class="d-mono" x="492" y="194">s(C) = -0,30</text>
+
+            <path class="d-seta" d="M592 94 H 640" stroke-width="1.2"/>
+            <path class="d-seta" d="M592 142 H 640" stroke-width="1.2"/>
+            <path class="d-seta" d="M592 190 H 640" stroke-width="1.2"/>
+
+            <rect class="d-saida" x="640" y="60" width="26" height="160" rx="13" stroke-width="1.4" stroke-dasharray="3 3"/>
+            <text class="d-rotulo" x="653" y="245" text-anchor="middle">SOFTMAX</text>
+
+            <path class="d-seta" d="M666 94 H 706" stroke-width="1.2"/>
+            <path class="d-seta" d="M666 142 H 706" stroke-width="1.2"/>
+            <path class="d-seta" d="M666 190 H 706" stroke-width="1.2"/>
+
+            <text class="d-rotulo" x="712" y="62">% VOTOS VÁLIDOS</text>
+            <text class="d-ac" x="712" y="98">61,2 %</text>
+            <text class="d-ac" x="712" y="146">31,9 %</text>
+            <text class="d-ac" x="712" y="194">6,9 %</text>
+
+            <path class="d-seta" d="M712 208 H 790" stroke-width="1"/>
+            <text class="d-mono" x="712" y="226">soma 100,0 %</text>
+          </svg>
+        </div>
+        <figcaption>Os três candidatos passam pela mesma rede, com os mesmos pesos. O softmax só
+          enxerga aquele município — por isso a saída é sempre uma distribuição válida, qualquer que
+          seja o número de candidatos. Disputas com menos candidatos recebem posições de
+          preenchimento mascaradas com −∞ antes do softmax, que portanto recebem probabilidade zero.</figcaption>
+      </figure>
+
+      <p>Essa escolha resolve três problemas de uma vez, sem nenhuma correção posterior: toda
+        estimativa fica entre 0 e 100%, a soma por município é exatamente 100%, e o número de
+        candidatos pode variar de 2 (segundo turno) a 13 (primeiro turno de 2018) sem mudar nada na
+        rede.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="cab-sec"><span class="num">07</span><h2>O que a rede minimiza</h2></div>
+    <div class="corpo">
+      <p>A perda é a entropia cruzada entre a distribuição oficial de votos e a prevista, com um peso
+        por município:</p>
+      <div class="formula">
+        perda = − Σ<sub>d</sub> w<sub>d</sub> Σ<sub>c</sub> y<sub>dc</sub> · log p<sub>dc</sub> ÷ Σ<sub>d</sub> w<sub>d</sub>
+        <span class="leg">w<sub>d</sub> = √(votos válidos da disputa d)</span>
+      </div>
+      <p>O peso é uma decisão explícita. Com <span class="mono">w = votos válidos</span> a perda seria
+        a verossimilhança multinomial exata — e São Paulo sozinho dominaria o treino. Com peso igual
+        por município, um distrito de mil eleitores pesaria o mesmo que a capital. A raiz quadrada é
+        o meio-termo que adotamos, e está documentada como escolha, não como fato.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="cab-sec"><span class="num">08</span><h2>Treinamento e escolha das épocas</h2></div>
+    <div class="corpo">
+      <p>AdamW com taxa de aprendizado 1e-3 e decaimento de pesos 1e-3, lotes de 256 disputas, corte
+        de gradiente em 5, até 200 épocas.</p>
+      <p>A parte delicada é <strong>quando parar</strong>. Não dá para separar municípios ao acaso: dois
+        municípios da mesma eleição compartilham a onda nacional daquele ano, e misturá-los entre
+        treino e validação seria vazamento disfarçado. Então a validação é <em>temporal e por eleição
+        inteira</em>: cada uma das três últimas eleições de treino é usada como validação, treinando
+        só com as anteriores a ela. As curvas de perda são promediadas e escolhe-se a época de menor
+        perda média, com paciência de 15.</p>
+      <p>Depois disso, cinco redes com sementes diferentes
+        (<span class="mono">11, 23, 37, 51, 73</span>) são treinadas <strong>do zero</strong> com todas
+        as eleições, por esse número de épocas. A estimativa é a média das cinco. O desvio entre elas
+        mede só a instabilidade do treino — <strong>não é intervalo de confiança</strong>, e a interface
+        diz isso onde o número aparece.</p>
+
+      <div class="nota grave">
+        <span class="rot">O que aconteceu nesta execução</span>
+        <p>O critério escolheu <strong>1 época</strong>. As curvas de validação interna explicam: em 2014 o
+          mínimo cai na época 89 e na 4; em 2022, nas épocas 41 e 48. Mas <strong>2018 piora treinando</strong> —
+          o mínimo está na época 1 (perda 1,85) e sobe para 2,24 na época 10, porque Bolsonaro
+          concorria pelo PSL, um partido sem histórico presidencial. Como 2018 tem nível de perda muito
+          mais alto que as outras duas, a média entre eleições é mínima logo na primeira época.</p>
+        <p>O código está correto e fiel ao método descrito. A consequência, porém, é que a rede final
+          foi treinada por uma única época — e isso precisa ser lido junto com os resultados abaixo.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="cab-sec"><span class="num">09</span><h2>De município para estado e Brasil</h2></div>
+    <div class="corpo">
+      <p>A porcentagem nacional oficial é a soma dos votos dividida pela soma dos válidos — que é
+        exatamente a média das porcentagens municipais ponderada pelos votos válidos de cada
+        município. Como os válidos de 2026 ainda não existem, estimamos o peso:</p>
+      <div class="formula">
+        p<sub>BR</sub>(c) = Σ<sub>m</sub> W<sub>m</sub> · p<sub>m</sub>(c) ÷ Σ<sub>m</sub> W<sub>m</sub><br>
+        W<sub>m</sub> = eleitorado apto de 2026 × (votos válidos ÷ aptos) do município na eleição anterior
+        <span class="leg">A média simples entre municípios não é usada: daria a um município de mil
+          eleitores o mesmo peso de São Paulo.</span>
+      </div>
+      <p>Um teste automático prova a identidade: ponderando as porcentagens municipais oficiais de
+        2022 pelos votos válidos <em>reais</em>, a agregação reproduz a porcentagem nacional oficial
+        com tolerância de 1e-9.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="cab-sec"><span class="num">10</span><h2>Como ela foi avaliada</h2></div>
+    <div class="corpo">
+      <p>Teste retrospectivo honesto: para cada eleição de teste, a rede é treinada <strong>só com
+        eleições anteriores</strong> e avaliada na eleição inteira — todos os municípios, os dois
+        turnos. Nenhum município da eleição de teste aparece no treino.</p>
+
+      <div class="rolagem larga">
+        <table>
+          <caption>Erro absoluto médio por município, em pontos percentuais de votos válidos</caption>
+          <thead>
+            <tr>
+              <th scope="col">Teste</th>
+              <th scope="col">Turno</th>
+              <th scope="col">Rede neural</th>
+              <th scope="col">Persistência partidária</th>
+              <th scope="col">Divisão igual</th>
+              <th scope="col">Acerto do mais votado (rede)</th>
+              <th scope="col">Erro do agregado nacional (rede)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>2010</td><td class="num-cel">1º</td><td class="num-cel">3,75</td><td class="num-cel melhor">3,71</td><td class="num-cel">15,29</td><td class="num-cel">76,3%</td><td class="num-cel">4,13</td></tr>
+            <tr><td>2010</td><td class="num-cel">2º</td><td class="num-cel melhor">7,32</td><td class="num-cel">8,03</td><td class="num-cel">14,41</td><td class="num-cel">81,1%</td><td class="num-cel">4,15</td></tr>
+            <tr><td>2014</td><td class="num-cel">1º</td><td class="num-cel">2,83</td><td class="num-cel melhor">2,78</td><td class="num-cel">13,13</td><td class="num-cel">80,8%</td><td class="num-cel">3,52</td></tr>
+            <tr><td>2014</td><td class="num-cel">2º</td><td class="num-cel">8,25</td><td class="num-cel melhor">7,62</td><td class="num-cel">16,41</td><td class="num-cel">81,6%</td><td class="num-cel">7,29</td></tr>
+            <tr><td>2018</td><td class="num-cel">1º</td><td class="num-cel">8,38</td><td class="num-cel melhor">8,18</td><td class="num-cel">10,52</td><td class="num-cel">37,9%</td><td class="num-cel">8,86</td></tr>
+            <tr><td>2018</td><td class="num-cel">2º</td><td class="num-cel ruim">36,01</td><td class="num-cel ruim">46,72</td><td class="num-cel melhor">19,46</td><td class="num-cel">49,8%</td><td class="num-cel ruim">37,60</td></tr>
+            <tr><td>2022</td><td class="num-cel">1º</td><td class="num-cel">9,99</td><td class="num-cel melhor">6,32</td><td class="num-cel">13,73</td><td class="num-cel ruim">31,1%</td><td class="num-cel">10,48</td></tr>
+            <tr><td>2022</td><td class="num-cel">2º</td><td class="num-cel">15,18</td><td class="num-cel melhor">8,00</td><td class="num-cel">16,49</td><td class="num-cel">69,4%</td><td class="num-cel">13,89</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:0.8rem;color:var(--apoio);max-width:var(--col)">Verde: o melhor da linha.
+        Vermelho: resultados em que o modelo falha de forma relevante. <em>Persistência partidária</em>
+        repete a votação do partido ou do próprio candidato no mesmo município, renormalizada entre os
+        candidatos atuais. <em>Divisão igual</em> dá a mesma fatia a todos.</p>
+
+      <div class="nota grave">
+        <span class="rot">A leitura honesta deste quadro</span>
+        <p>A rede <strong>não supera a referência simples</strong> em 6 dos 8 testes, e em 2022 perde com
+          folga: 9,99 contra 6,32 no primeiro turno, e acerta o mais votado em apenas 31% dos
+          municípios, contra 84% da persistência. No segundo turno de 2018 as duas falham, e a divisão
+          igual sai melhor que ambas. Parte disso vem da rede ter sido treinada por uma única época
+          (seção 08); parte é o problema de fundo da seção 11.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="cab-sec"><span class="num">11</span><h2>O limite que nenhum ajuste resolve</h2></div>
+    <div class="corpo">
+      <p>Há milhares de municípios, mas pouquíssimas <strong>eleições independentes</strong>: seis alvos
+        de treino, quatro de teste. Tudo o que é comum a uma eleição inteira — a força nacional de um
+        candidato novo, uma onda de opinião, a troca de partido de um nome forte — é observado meia
+        dúzia de vezes. Por isso a rede capta melhor a <em>geografia relativa</em> do voto do que o
+        <em>nível nacional</em>.</p>
+      <p>A estimativa de 2026 mostra isso de forma crua. Seis candidatos receberam exatamente a mesma
+        porcentagem — 7,19% — porque seus vetores de entrada são <strong>literalmente idênticos</strong>:</p>
+      <div class="rolagem">
+        <table>
+          <caption>Candidatos com entradas indistinguíveis para a rede</caption>
+          <thead><tr><th scope="col">Candidato</th><th scope="col">Partido</th><th scope="col">Partido disputou 2022?</th><th scope="col">Já concorreu?</th></tr></thead>
+          <tbody>
+            <tr><td>Ronaldo Caiado</td><td>PSD</td><td>não</td><td>não</td></tr>
+            <tr><td>Pablo Marçal</td><td>PRTB</td><td>não</td><td>não</td></tr>
+            <tr><td>Leonardo Avalanche</td><td>PRTB</td><td>não</td><td>não</td></tr>
+            <tr><td>Augusto Cury</td><td>AVANTE</td><td>não</td><td>não</td></tr>
+            <tr><td>Renan Santos</td><td>MISSÃO</td><td>não</td><td>não</td></tr>
+            <tr><td>Wilson Grassi</td><td>DEMOCRATA</td><td>não</td><td>não</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Nenhum desses partidos disputou a Presidência em 2022 e nenhum desses nomes concorreu antes.
+        As treze variáveis de candidato e partido são todas zero para os seis. Entradas iguais, saída
+        igual — a rede está certa; o que falta é informação, e inventá-la seria fraude, não
+        modelagem.</p>
+      <p>Há dois caminhos legítimos para melhorar isso. O primeiro é preencher
+        <code>dados/manual/pesquisas_resultados.csv</code>: com percentuais de pesquisa para todas as
+        eleições de treino e para 2026, a rede ganha uma variável que fala do presente. O segundo é
+        revisar o critério de escolha de épocas — mas isso é mudar o método, e precisa ser uma decisão
+        declarada, não um ajuste silencioso.</p>
+
+      <details>
+        <summary>As treze verificações automáticas, todas aprovadas</summary>
+        <ul>
+          <li>Chave única por eleição, turno, município e candidato — 0 duplicadas</li>
+          <li>Votos não negativos</li>
+          <li>Porcentagens oficiais somam 100% em cada um dos 73.827 municípios-turno</li>
+          <li>Contagem de municípios por eleição, de 5.586 (1998) a 5.709 (2022, 2º turno)</li>
+          <li>Totais nacionais recalculados conferem com o TSE</li>
+          <li>Nenhum resultado de 2026 na base de entradas</li>
+          <li>Validação temporal: treino sempre anterior ao teste, nos quatro backtests</li>
+          <li>Backtest e previsão em escala válida — somam 100% por município</li>
+          <li>Agregado nacional soma 100%</li>
+          <li>Rede final treinada só com eleições anteriores a 2026</li>
+          <li>49 municípios sem histórico, que usam o comportamento do estado</li>
+        </ul>
+        <p style="margin-bottom:0">Além disso, <span class="mono">pytest</span> executa 16 testes sobre
+          dados <strong>sintéticos</strong>, gerados em pasta temporária — nenhum dado real é tocado.</p>
+      </details>
+    </div>
+  </section>
+
+  <footer class="rodape">
+    <p><strong>As estimativas desta página são experimentais.</strong> Não são resultado oficial, não
+      são pesquisa eleitoral e não garantem quem vencerá. Campanha, alianças, debates, economia e
+      comparecimento não estão nos dados. Esta documentação não faz recomendação de voto.</p>
+    <p>Josué de Vasconcelos Silveira (2517534) e Plinio Rodrigues (2526504) &middot; dados do
+      Tribunal Superior Eleitoral, Portal de Dados Abertos.</p>
+  </footer>
+
+</div>

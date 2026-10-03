@@ -1,0 +1,8 @@
+dados/brutos/
+dados/processados/
+dados/fontes.json
+dados/manual/pesquisas_resultados.csv
+modelos/
+resultados/
+__pycache__/
+*.parcial
