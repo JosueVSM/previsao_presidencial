@@ -1,0 +1,22 @@
+{
+  "gerado_em": "2026-10-03T10:20:51-03:00",
+  "o_que_e": "Recorte dos resultados do pipeline, versionado para o app abrir sem baixar os dados do TSE.",
+  "backtest_contem_eleicoes": [
+    2022
+  ],
+  "metricas_contem": "os quatro testes retrospectivos (2010, 2014, 2018, 2022), completos",
+  "observacao": "Números idênticos aos do pipeline; nada foi recalculado. Para o conjunto completo rode: python -m eleicao.pipeline tudo",
+  "arquivos": {
+    "resultados_municipio.parquet": 5841823,
+    "candidatos_2026.parquet": 9447,
+    "pesquisas_registro_2026.parquet": 1205881,
+    "avaliacao_metricas.csv": 4437,
+    "backtest_nacional.csv": 24357,
+    "relatorio_verificacoes.json": 3598,
+    "previsao_2026.parquet": 1364845,
+    "previsao_2026_meta.json": 1084,
+    "previsoes_backtest.parquet": 2308001,
+    "modelo.json": 16255,
+    "fontes.json": 19432
+  }
+}

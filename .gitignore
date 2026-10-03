@@ -6,3 +6,6 @@ modelos/
 resultados/
 __pycache__/
 *.parcial
+
+# A pasta amostra/ é versionada de propósito: é o recorte que faz o app abrir
+# logo após o clone, sem baixar os 2,3 GB do TSE (ver eleicao/amostra.py).

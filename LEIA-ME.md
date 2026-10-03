@@ -14,12 +14,15 @@ A explicação de como a rede foi construída está em [`documentacao_rede_neura
 
 ---
 
-## Abrir o aplicativo (o caminho rápido)
+## Abrir o aplicativo
 
-Se o projeto já foi rodado nesta máquina — ou seja, se existem as pastas `dados/processados/`,
-`resultados/` e `modelos/` — basta **um comando**.
+**Não é preciso baixar nada do TSE para ver o projeto funcionando.** O repositório já traz a pasta
+`amostra/`, com os resultados que o pipeline produziu: a tabela de métricas das quatro eleições de
+teste, o teste retrospectivo navegável de 2022 por município, a estimativa de 2026 e o relatório das
+verificações. O app detecta sozinho e avisa na tela que está usando a amostra.
 
-Abra o terminal na pasta do projeto e rode:
+Depois de instalar as bibliotecas (passo 1 da seção seguinte), abra o terminal na pasta do projeto
+e rode:
 
 **Windows (PowerShell)**
 
@@ -42,9 +45,10 @@ Para **encerrar**, volte ao terminal e pressione `Ctrl + C`.
 
 ---
 
-## Primeira vez nesta máquina
+## Instalar e, se quiser, reproduzir tudo
 
-Se a pasta `.venv` ainda não existe, é preciso preparar o ambiente antes. São quatro passos.
+O passo 1 é obrigatório uma única vez. Os passos 2 e 3 só fazem sentido se você quiser **refazer**
+os resultados a partir dos arquivos oficiais, em vez de olhar a amostra.
 
 ### 1. Criar o ambiente virtual e instalar as bibliotecas
 
@@ -67,13 +71,14 @@ pip install -r requirements.txt
 Instala pandas, numpy, pyarrow, PyTorch, Streamlit, Plotly e pytest. Demora alguns minutos,
 principalmente por causa do PyTorch.
 
-### 2. Rodar o pipeline completo
+### 2. Rodar o pipeline completo (opcional)
 
 ```bash
 python -m eleicao.pipeline tudo
 ```
 
-Isso executa, em ordem: **baixar → preparar → avaliar → prever → verificar**.
+Isso executa, em ordem: **baixar → preparar → avaliar → prever → verificar → amostra**. A partir
+daí o app passa a usar os dados completos, e não mais a amostra — o aviso some da tela.
 
 > **Reserve tempo e espaço em disco.** São cerca de **2,3 GB** baixados do site do TSE e perto de
 > **40 minutos** no total, numa máquina comum. É normal o terminal parecer parado por vários
@@ -88,6 +93,7 @@ python -m eleicao.pipeline preparar    # limpa os dados e gera as tabelas
 python -m eleicao.pipeline avaliar     # testes retrospectivos (a parte mais demorada)
 python -m eleicao.pipeline prever      # treina a rede final e estima 2026
 python -m eleicao.pipeline verificar   # confere escala, consistência e vazamento
+python -m eleicao.pipeline amostra     # regenera o recorte versionado
 ```
 
 Ao final do `verificar`, as treze linhas devem aparecer com `[OK]`.
@@ -98,7 +104,7 @@ Ao final do `verificar`, as treze linhas devem aparecer com `[OK]`.
 pytest -q
 ```
 
-Devem passar **16 testes** em cerca de 25 segundos. Eles usam dados **sintéticos** gerados numa
+Devem passar **19 testes** em cerca de 30 segundos. Eles usam dados **sintéticos** gerados numa
 pasta temporária — nada em `dados/` é tocado.
 
 ### 4. Abrir o aplicativo
@@ -140,7 +146,8 @@ oficial.
 | Problema | O que fazer |
 |---|---|
 | `streamlit: command not found` ou `não é reconhecido` | O ambiente virtual não está ativo. Rode o `activate` da sua plataforma e tente de novo. |
-| A página diz **"Nenhum dado processado foi encontrado"** | O pipeline ainda não rodou. Execute `python -m eleicao.pipeline tudo`. |
+| A página diz **"Nenhum dado processado foi encontrado"** | A pasta `amostra/` não veio no clone. Baixe o repositório de novo, ou execute `python -m eleicao.pipeline tudo`. |
+| Aparece a faixa **"Você está vendo a amostra"** | É o esperado em um clone novo, e os números são os mesmos do pipeline. Para o conjunto completo, rode `python -m eleicao.pipeline tudo`. |
 | A página diz **"A rede ainda não foi treinada"** | Faltam as etapas de modelo. Execute `python -m eleicao.pipeline avaliar` e depois `prever`. |
 | `Port 8501 is already in use` | Já há um app aberto. Use `streamlit run app.py --server.port 8502`. |
 | Um download do TSE falhou | Baixe o arquivo pelo endereço que apareceu no terminal e salve em `dados/brutos/` **com o mesmo nome**. Depois rode `python -m eleicao.pipeline preparar`. |

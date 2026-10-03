@@ -1,0 +1,57 @@
+{
+  "gerado_em": "2026-10-03T10:20:09-03:00",
+  "ano_alvo": 2026,
+  "turnos_estimados": [
+    1
+  ],
+  "pesquisas_como_entrada": false,
+  "eleicoes_treino": [
+    "2002",
+    "2006",
+    "2010",
+    "2014",
+    "2018",
+    "2022"
+  ],
+  "eleicoes_validacao_interna": [
+    "2014",
+    "2018",
+    "2022"
+  ],
+  "epocas_por_semente": [
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "colunas_entrada": [
+    "partido_ant_mun_1t",
+    "partido_ant_uf_1t",
+    "partido_ant_br_1t",
+    "log_partido_ant_mun_1t",
+    "partido_concorreu_ant",
+    "partido_ant_mun_2t",
+    "partido_no_2t_ant",
+    "cand_ant_mun_1t",
+    "cand_ant_br_1t",
+    "cand_concorreu_ant",
+    "cand_concorreu_alguma_vez",
+    "cand_eleito_ant",
+    "partido_do_eleito_ant",
+    "segundo_turno",
+    "n_candidatos",
+    "log_eleitorado",
+    "comparecimento_ant",
+    "fragmentacao_ant",
+    "sem_historico_mun",
+    "regiao_N",
+    "regiao_NE",
+    "regiao_CO",
+    "regiao_SE",
+    "regiao_S",
+    "regiao_EXT"
+  ],
+  "n_candidatos": 14,
+  "n_municipios": 5757
+}

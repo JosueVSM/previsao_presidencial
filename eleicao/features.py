@@ -285,8 +285,23 @@ def colunas_entrada(usar_pesquisas: bool) -> list[str]:
 
 
 def baseline_persistencia(df: pd.DataFrame) -> np.ndarray:
-    """Referência simples: repete a votação anterior do candidato/partido no município,
-    renormalizada entre os candidatos atuais (com piso pequeno para quem não concorreu)."""
-    s = np.maximum(df["partido_ant_mun_1t"].values, df["cand_ant_mun_1t"].values) + 0.001
+    """Referência simples: repete a votação anterior no município, renormalizada entre
+    os candidatos atuais (com piso pequeno para quem não concorreu).
+
+    A disputa que se repete tem de ser a do MESMO tipo de turno. Para um 1º turno, a
+    referência é o 1º turno anterior (do partido, pela linhagem, ou do próprio candidato,
+    o que for maior). Para um 2º turno, usa-se o 2º turno anterior sempre que o partido
+    esteve nele — comparar um 2º turno com as fatias do 1º turno anterior subestimaria a
+    referência e daria à rede um adversário mais fraco do que o problema real.
+
+    Quando o partido não disputou o 2º turno anterior (caso do PSL em 2018, por exemplo),
+    não há o que repetir e recai-se no 1º turno anterior. Todas as colunas vêm da eleição
+    T-4: a referência não enxerga nada do ano previsto.
+    """
+    s = np.maximum(df["partido_ant_mun_1t"].values, df["cand_ant_mun_1t"].values)
+    if {"segundo_turno", "partido_ant_mun_2t", "partido_no_2t_ant"} <= set(df.columns):
+        usa_2t = (df["segundo_turno"].values == 1) & (df["partido_no_2t_ant"].values == 1)
+        s = np.where(usa_2t, df["partido_ant_mun_2t"].values, s)
+    s = s + 0.001
     tot = pd.Series(s).groupby(df["id_disputa"].values).transform("sum").values
     return s / tot

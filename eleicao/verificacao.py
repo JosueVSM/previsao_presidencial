@@ -36,7 +36,11 @@ def verificar() -> list[dict]:
     cont = res.groupby(["ano", "turno"])["cd_municipio"].nunique()
     itens.append(_item("Municípios por eleição/turno", True,
                        "; ".join(f"{a}/{t}º: {n}" for (a, t), n in cont.items())))
-    nac = res.groupby(["ano", "turno", "nome_urna"])["votos"].sum().reset_index()
+    # Soma por candidato (nome civil normalizado), não por nome de urna: o nome de
+    # urna é rótulo e pode variar, o que partiria o total de uma mesma pessoa.
+    nac = res.groupby(["ano", "turno", "candidato"], as_index=False)["votos"].sum()
+    nac = nac.merge(agregacao._rotulos(res, ["ano", "turno"], "votos"),
+                    on=["ano", "turno", "candidato"], how="left")
     nac["pct"] = 100 * nac.votos / nac.groupby(["ano", "turno"]).votos.transform("sum")
     top = (nac.sort_values("pct", ascending=False).groupby(["ano", "turno"]).head(2)
               .sort_values(["ano", "turno", "pct"], ascending=[True, True, False]))

@@ -661,6 +661,12 @@ assert not np.allclose(a["y"], b["y"])         # só o alvo mudou</code></pre>
       <p>Um teste automático prova a identidade: ponderando as porcentagens municipais oficiais de
         2022 pelos votos válidos <em>reais</em>, a agregação reproduz a porcentagem nacional oficial
         com tolerância de 1e-9.</p>
+      <p>A soma percorre os municípios <strong>por candidato</strong>, identificado pelo nome civil
+        normalizado. Nome de urna e sigla são apenas rótulos e são escolhidos depois, pelo maior peso
+        agregado. Se entrassem na chave do agrupamento, uma grafia diferente em alguns municípios
+        partiria a mesma pessoa em duas linhas, cada uma com parte dos votos, e a barra do gráfico
+        apareceria menor do que é — sem erro, sem aviso. Um teste suja de propósito o nome de urna em
+        metade dos municípios e exige que a porcentagem agregada não mude.</p>
     </div>
   </section>
 
@@ -687,28 +693,53 @@ assert not np.allclose(a["y"], b["y"])         # só o alvo mudou</code></pre>
           </thead>
           <tbody>
             <tr><td>2010</td><td class="num-cel">1º</td><td class="num-cel">3,75</td><td class="num-cel melhor">3,71</td><td class="num-cel">15,29</td><td class="num-cel">76,3%</td><td class="num-cel">4,13</td></tr>
-            <tr><td>2010</td><td class="num-cel">2º</td><td class="num-cel melhor">7,32</td><td class="num-cel">8,03</td><td class="num-cel">14,41</td><td class="num-cel">81,1%</td><td class="num-cel">4,15</td></tr>
+            <tr><td>2010</td><td class="num-cel">2º</td><td class="num-cel">7,32</td><td class="num-cel melhor">6,59</td><td class="num-cel">14,41</td><td class="num-cel">81,1%</td><td class="num-cel">4,15</td></tr>
             <tr><td>2014</td><td class="num-cel">1º</td><td class="num-cel">2,83</td><td class="num-cel melhor">2,78</td><td class="num-cel">13,13</td><td class="num-cel">80,8%</td><td class="num-cel">3,52</td></tr>
-            <tr><td>2014</td><td class="num-cel">2º</td><td class="num-cel">8,25</td><td class="num-cel melhor">7,62</td><td class="num-cel">16,41</td><td class="num-cel">81,6%</td><td class="num-cel">7,29</td></tr>
+            <tr><td>2014</td><td class="num-cel">2º</td><td class="num-cel">8,25</td><td class="num-cel melhor">6,76</td><td class="num-cel">16,41</td><td class="num-cel">81,6%</td><td class="num-cel">7,29</td></tr>
             <tr><td>2018</td><td class="num-cel">1º</td><td class="num-cel">8,38</td><td class="num-cel melhor">8,18</td><td class="num-cel">10,52</td><td class="num-cel">37,9%</td><td class="num-cel">8,86</td></tr>
-            <tr><td>2018</td><td class="num-cel">2º</td><td class="num-cel ruim">36,01</td><td class="num-cel ruim">46,72</td><td class="num-cel melhor">19,46</td><td class="num-cel">49,8%</td><td class="num-cel ruim">37,60</td></tr>
+            <tr><td>2018</td><td class="num-cel">2º</td><td class="num-cel ruim">36,01</td><td class="num-cel ruim">46,76</td><td class="num-cel melhor">19,46</td><td class="num-cel">49,8%</td><td class="num-cel ruim">37,60</td></tr>
             <tr><td>2022</td><td class="num-cel">1º</td><td class="num-cel">9,99</td><td class="num-cel melhor">6,32</td><td class="num-cel">13,73</td><td class="num-cel ruim">31,1%</td><td class="num-cel">10,48</td></tr>
-            <tr><td>2022</td><td class="num-cel">2º</td><td class="num-cel">15,18</td><td class="num-cel melhor">8,00</td><td class="num-cel">16,49</td><td class="num-cel">69,4%</td><td class="num-cel">13,89</td></tr>
+            <tr><td>2022</td><td class="num-cel">2º</td><td class="num-cel ruim">15,18</td><td class="num-cel melhor">4,84</td><td class="num-cel">16,49</td><td class="num-cel">69,4%</td><td class="num-cel">13,89</td></tr>
           </tbody>
         </table>
       </div>
       <p style="font-size:0.8rem;color:var(--apoio);max-width:var(--col)">Verde: o melhor da linha.
         Vermelho: resultados em que o modelo falha de forma relevante. <em>Persistência partidária</em>
-        repete a votação do partido ou do próprio candidato no mesmo município, renormalizada entre os
-        candidatos atuais. <em>Divisão igual</em> dá a mesma fatia a todos.</p>
+        repete, no mesmo município, a disputa anterior <strong>do mesmo tipo de turno</strong> — para um
+        2º turno, o 2º turno anterior — renormalizada entre os candidatos atuais.
+        <em>Divisão igual</em> dá a mesma fatia a todos.</p>
+
+      <h3>O caso mais ilustrativo: o 2º turno de 2022</h3>
+      <p>Agregando as estimativas municipais para o país, com a rede treinada apenas em eleições até
+        2018:</p>
+      <div class="rolagem">
+        <table>
+          <caption>2º turno de 2022 — agregado nacional, % de votos válidos</caption>
+          <thead><tr><th scope="col">&nbsp;</th><th scope="col">Lula (PT)</th><th scope="col">Jair Bolsonaro (PL)</th><th scope="col">Vencedor</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Resultado oficial do TSE</strong></td><td class="num-cel">50,9</td><td class="num-cel">49,1</td><td>Lula</td></tr>
+            <tr><td>Rede neural</td><td class="num-cel ruim">37,0</td><td class="num-cel ruim">63,0</td><td class="ruim">Bolsonaro — errado por 14 p.p.</td></tr>
+            <tr><td>Persistência partidária</td><td class="num-cel">48,9</td><td class="num-cel">51,1</td><td>Bolsonaro — errado por 2 p.p.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>As duas erram quem ganhou, mas em escalas incomparáveis. A referência simples fica a 2 pontos
+        do resultado; a rede, a 14. E note que a referência aqui <em>só repete o 2º turno de 2018 no
+        mesmo município</em> — exatamente a informação que a versão anterior desta avaliação não
+        deixava a referência usar.</p>
 
       <div class="nota grave">
         <span class="rot">A leitura honesta deste quadro</span>
-        <p>A rede <strong>não supera a referência simples</strong> em 6 dos 8 testes, e em 2022 perde com
-          folga: 9,99 contra 6,32 no primeiro turno, e acerta o mais votado em apenas 31% dos
-          municípios, contra 84% da persistência. No segundo turno de 2018 as duas falham, e a divisão
-          igual sai melhor que ambas. Parte disso vem da rede ter sido treinada por uma única época
-          (seção 08); parte é o problema de fundo da seção 11.</p>
+        <p>A rede <strong>só vence a referência simples em 1 dos 8 testes</strong> — o 2º turno de 2018 — e
+          mesmo lá a divisão igual (19,46) é melhor que as duas. Em 2022 perde com folga: 9,99 contra
+          6,32 no primeiro turno, 15,18 contra 4,84 no segundo, e acerta o mais votado em 31% dos
+          municípios contra 84% da persistência. Parte disso vem de a rede ter sido treinada por uma
+          única época (seção 08); parte é o problema de fundo da seção 11.</p>
+        <p>Esses números são piores que os de uma versão anterior desta documentação, e a razão importa:
+          a referência de 2º turno estava comparando um 2º turno com as fatias do <em>1º</em> turno
+          anterior, o que a enfraquecia. Corrigido isso, a persistência no 2º turno de 2022 caiu de 8,00
+          para 4,84 e a única vitória da rede em 2010 virou derrota. Um adversário mais fraco do que o
+          problema real deixava a rede parecer melhor do que é.</p>
       </div>
     </div>
   </section>
@@ -762,7 +793,7 @@ assert not np.allclose(a["y"], b["y"])         # só o alvo mudou</code></pre>
           <li>Rede final treinada só com eleições anteriores a 2026</li>
           <li>49 municípios sem histórico, que usam o comportamento do estado</li>
         </ul>
-        <p style="margin-bottom:0">Além disso, <span class="mono">pytest</span> executa 16 testes sobre
+        <p style="margin-bottom:0">Além disso, <span class="mono">pytest</span> executa 19 testes sobre
           dados <strong>sintéticos</strong>, gerados em pasta temporária — nenhum dado real é tocado.</p>
       </details>
     </div>
@@ -772,6 +803,11 @@ assert not np.allclose(a["y"], b["y"])         # só o alvo mudou</code></pre>
     <p><strong>As estimativas desta página são experimentais.</strong> Não são resultado oficial, não
       são pesquisa eleitoral e não garantem quem vencerá. Campanha, alianças, debates, economia e
       comparecimento não estão nos dados. Esta documentação não faz recomendação de voto.</p>
+    <p><strong>Para reproduzir.</strong> O repositório abre direto no Streamlit com a pasta
+      <span class="mono">amostra/</span>, que traz estes mesmos números sem precisar baixar os 2,3 GB
+      do TSE. Para refazer tudo a partir dos arquivos oficiais:
+      <span class="mono">python -m eleicao.pipeline tudo</span>. Instruções em
+      <span class="mono">LEIA-ME.md</span>.</p>
     <p>Josué de Vasconcelos Silveira (2517534) e Plinio Rodrigues (2526504) &middot; dados do
       Tribunal Superior Eleitoral, Portal de Dados Abertos.</p>
   </footer>

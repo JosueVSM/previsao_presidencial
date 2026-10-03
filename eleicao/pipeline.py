@@ -5,6 +5,7 @@
     python -m eleicao.pipeline avaliar     # validação temporal (backtests)
     python -m eleicao.pipeline prever      # treina a rede final e estima 2026
     python -m eleicao.pipeline verificar   # checa escala, consistência e vazamento
+    python -m eleicao.pipeline amostra     # recorte pequeno versionado no repositório
     python -m eleicao.pipeline tudo        # todas as etapas acima, em ordem
 """
 from __future__ import annotations
@@ -31,13 +32,15 @@ def _saida_utf8() -> None:
 
 def main(argv: list[str] | None = None) -> None:
     ap = argparse.ArgumentParser(description="Estimativa experimental de votos para Presidente (rede neural)")
-    ap.add_argument("etapa", choices=["baixar", "preparar", "avaliar", "prever", "verificar", "tudo"])
+    ap.add_argument("etapa",
+                    choices=["baixar", "preparar", "avaliar", "prever", "verificar", "amostra", "tudo"])
     ap.add_argument("--forcar-download", action="store_true", help="baixa de novo mesmo se o arquivo existir")
     args = ap.parse_args(argv)
     _saida_utf8()
     config.garantir_pastas()
     t0 = time.time()
-    etapas = ["baixar", "preparar", "avaliar", "prever", "verificar"] if args.etapa == "tudo" else [args.etapa]
+    etapas = (["baixar", "preparar", "avaliar", "prever", "verificar", "amostra"]
+              if args.etapa == "tudo" else [args.etapa])
     for e in etapas:
         print(f"\n=== {e.upper()} ===")
         if e == "baixar":
@@ -57,6 +60,9 @@ def main(argv: list[str] | None = None) -> None:
         elif e == "verificar":
             from .verificacao import verificar
             verificar()
+        elif e == "amostra":
+            from .amostra import gerar
+            gerar()
     print(f"\nConcluído em {time.time() - t0:.0f} s.")
 
 

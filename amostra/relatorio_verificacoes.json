@@ -1,0 +1,76 @@
+{
+  "gerado_em": "2026-10-03T10:20:10-03:00",
+  "itens": [
+    {
+      "verificacao": "Chave única (eleição, turno, município, candidato)",
+      "ok": true,
+      "detalhe": "0 duplicadas"
+    },
+    {
+      "verificacao": "Votos não negativos",
+      "ok": true,
+      "detalhe": "mín = 0"
+    },
+    {
+      "verificacao": "% de votos válidos oficiais somam 100% por município",
+      "ok": true,
+      "detalhe": "73827 grupos; soma mín=1.000000, máx=1.000000; todos os valores em [0,1]: True"
+    },
+    {
+      "verificacao": "Municípios por eleição/turno",
+      "ok": true,
+      "detalhe": "1998/1º: 5586; 2002/1º: 5641; 2002/2º: 5641; 2006/1º: 5642; 2006/2º: 5642; 2010/1º: 5720; 2010/2º: 5720; 2014/1º: 5701; 2014/2º: 5701; 2018/1º: 5708; 2018/2º: 5708; 2022/1º: 5708; 2022/2º: 5709"
+    },
+    {
+      "verificacao": "Totais nacionais recalculados (conferir com o site do TSE)",
+      "ok": true,
+      "detalhe": "1998/1º FERNANDO HENRIQUE: 53.06%; 1998/1º LULA: 31.71%; 2002/1º LULA: 46.44%; 2002/1º JOSÉ SERRA: 23.20%; 2002/2º LULA: 61.27%; 2002/2º JOSÉ SERRA: 38.73%; 2006/1º LULA: 48.61%; 2006/1º GERALDO ALCKMIN: 41.64%; 2006/2º LULA: 60.83%; 2006/2º GERALDO ALCKMIN: 39.17%; 2010/1º DILMA: 46.91%; 2010/1º JOSÉ SERRA: 32.61%; 2010/2º DILMA: 56.05%; 2010/2º JOSÉ SERRA: 43.95%; 2014/1º DILMA: 41.59%; 2014/1º AÉCIO NEVES: 33.55%; 2014/2º DILMA: 51.64%; 2014/2º AÉCIO NEVES: 48.36%; 2018/1º JAIR BOLSONARO: 46.03%; 2018/1º FERNANDO HADDAD: 29.28%; 2018/2º JAIR BOLSONARO: 55.13%; 2018/2º FERNANDO HADDAD: 44.87%; 2022/1º LULA: 48.43%; 2022/1º JAIR BOLSONARO: 43.20%; 2022/2º LULA: 50.90%; 2022/2º JAIR BOLSONARO: 49.10%"
+    },
+    {
+      "verificacao": "Resultado oficial de 2026 fora das entradas",
+      "ok": true,
+      "detalhe": "não há resultado de 2026 na base"
+    },
+    {
+      "verificacao": "Validação temporal: treino sempre anterior ao teste",
+      "ok": true,
+      "detalhe": "teste 2010 <- treino 2002, 2006; teste 2014 <- treino 2002, 2006, 2010; teste 2018 <- treino 2002, 2006, 2010, 2014; teste 2022 <- treino 2002, 2006, 2010, 2014, 2018"
+    },
+    {
+      "verificacao": "Backtest: p_rede em escala válida (soma 100% por município)",
+      "ok": true,
+      "detalhe": "45675 grupos; soma mín=1.000000, máx=1.000000; todos os valores em [0,1]: True"
+    },
+    {
+      "verificacao": "Backtest: p_persistencia em escala válida (soma 100% por município)",
+      "ok": true,
+      "detalhe": "45675 grupos; soma mín=1.000000, máx=1.000000; todos os valores em [0,1]: True"
+    },
+    {
+      "verificacao": "Backtest: agregado nacional soma 100%",
+      "ok": true,
+      "detalhe": "8 grupos; soma mín=1.000000, máx=1.000000; todos os valores em [0,1]: True"
+    },
+    {
+      "verificacao": "Previsão 2026: escala válida por município",
+      "ok": true,
+      "detalhe": "5757 grupos; soma mín=1.000000, máx=1.000000; todos os valores em [0,1]: True"
+    },
+    {
+      "verificacao": "Previsão 2026: agregado nacional soma 100%",
+      "ok": true,
+      "detalhe": "1 grupos; soma mín=1.000000, máx=1.000000; todos os valores em [0,1]: True"
+    },
+    {
+      "verificacao": "Previsão 2026: rede treinada só com eleições anteriores",
+      "ok": true,
+      "detalhe": "treino: 2002, 2006, 2010, 2014, 2018, 2022"
+    },
+    {
+      "verificacao": "Municípios sem histórico na eleição anterior (usam valor da UF)",
+      "ok": true,
+      "detalhe": "49"
+    }
+  ],
+  "todas_ok": true
+}

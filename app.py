@@ -12,6 +12,7 @@ import plotly.graph_objects as go
 import streamlit as st
 
 from eleicao import agregacao, config
+from eleicao import amostra as amostra_mod
 from eleicao.features import colunas_entrada
 
 st.set_page_config(page_title="Estimativa experimental — Presidente", page_icon="🗳️", layout="wide")
@@ -37,21 +38,35 @@ def _js(caminho):
     return json.loads(caminho.read_text(encoding="utf-8")) if caminho.exists() else None
 
 
+def _csv(caminho):
+    return pd.read_csv(caminho) if caminho.exists() else None
+
+
 @st.cache_data(show_spinner="Carregando dados…")
 def carregar():
-    P, R, A = config.DIR_PROCESSADOS, config.DIR_RESULTADOS, config.ANO_ALVO
+    A = config.ANO_ALVO
+    P, R = config.DIR_PROCESSADOS, config.DIR_RESULTADOS
+    M, F = config.DIR_MODELOS / f"mlp_{A}", config.ARQ_FONTES
+    # Sem o pipeline rodado, cai na amostra versionada no repositório em vez de
+    # abrir vazio. Ver eleicao/amostra.py.
+    amostra = not (P / "resultados_municipio.parquet").exists() and amostra_mod.disponivel()
+    if amostra:
+        P = R = M = config.DIR_AMOSTRA
+        F = config.DIR_AMOSTRA / "fontes.json"
     d = {
+        "amostra": amostra,
+        "amostra_meta": _js(config.DIR_AMOSTRA / "AMOSTRA.json") if amostra else None,
         "oficial": _pq(P / "resultados_municipio.parquet"),
         "candidatos": _pq(P / f"candidatos_{A}.parquet"),
         "pesq_registro": _pq(P / f"pesquisas_registro_{A}.parquet"),
         "previsao": _pq(R / f"previsao_{A}.parquet"),
         "previsao_meta": _js(R / f"previsao_{A}_meta.json"),
         "backtest": _pq(R / "previsoes_backtest.parquet"),
-        "metricas": pd.read_csv(R / "avaliacao_metricas.csv") if (R / "avaliacao_metricas.csv").exists() else None,
-        "bt_nacional": pd.read_csv(R / "backtest_nacional.csv") if (R / "backtest_nacional.csv").exists() else None,
+        "metricas": _csv(R / "avaliacao_metricas.csv"),
+        "bt_nacional": _csv(R / "backtest_nacional.csv"),
         "verificacoes": _js(R / "relatorio_verificacoes.json"),
-        "modelo_meta": _js(config.DIR_MODELOS / f"mlp_{A}" / "modelo.json"),
-        "fontes": _js(config.ARQ_FONTES) or {},
+        "modelo_meta": _js(M / "modelo.json"),
+        "fontes": _js(F) or {},
     }
     try:
         from eleicao.pesquisas import carregar_manuais
@@ -79,6 +94,17 @@ if D["oficial"] is None:
     st.error("Nenhum dado processado foi encontrado. No terminal, na pasta do projeto, rode:")
     st.code("python -m eleicao.pipeline tudo", language="bash")
     st.stop()
+
+if D["amostra"]:
+    anos_bt = (D["amostra_meta"] or {}).get("backtest_contem_eleicoes") or []
+    st.info(
+        "**Você está vendo a amostra que acompanha o repositório.** Os números são os mesmos "
+        "produzidos pelo pipeline — nada foi recalculado —, mas o teste retrospectivo navegável "
+        f"traz só {', '.join(map(str, anos_bt)) or 'uma eleição'}; a tabela da aba *Avaliação da rede* "
+        "cobre as quatro eleições de teste. Para gerar o conjunto completo, rode "
+        "`python -m eleicao.pipeline tudo` (baixa cerca de 2,3 GB do TSE).",
+        icon="📦",
+    )
 
 # ---------------------------------------------------------------------------
 # Barra lateral
@@ -155,7 +181,10 @@ def oficial_local(ano: int, t: int) -> pd.DataFrame:
         o = o[o.uf == uf]
     elif nivel == "Município":
         o = o[(o.uf == uf) & (o.cd_municipio == mun)]
-    g = o.groupby(["candidato", "nome_urna", "partido"], as_index=False)["votos"].sum()
+    # Agrupa pelo nome civil normalizado; nome de urna e sigla são só rótulos e
+    # não entram na chave (ver agregacao._rotulos).
+    g = o.groupby("candidato", as_index=False)["votos"].sum()
+    g = g.merge(agregacao._rotulos(o, [], "votos"), on="candidato", how="left")
     g["pct_oficial"] = g.votos / g.votos.sum() if g.votos.sum() > 0 else np.nan
     return g
 

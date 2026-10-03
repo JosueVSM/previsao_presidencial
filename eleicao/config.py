@@ -21,6 +21,9 @@ DIR_MANUAL = DIR_DADOS / "manual"
 DIR_MODELOS = RAIZ / "modelos"
 DIR_RESULTADOS = RAIZ / "resultados"
 ARQ_FONTES = DIR_DADOS / "fontes.json"
+# Amostra versionada no repositório: permite abrir o app logo após clonar, sem
+# baixar os 2,3 GB do TSE. Gerada por `python -m eleicao.pipeline amostra`.
+DIR_AMOSTRA = RAIZ / "amostra"
 ARQ_LINHAGEM = Path(__file__).resolve().parent.parent / "config" / "linhagem_partidos.csv"
 ARQ_PESQUISAS_MANUAIS = DIR_MANUAL / "pesquisas_resultados.csv"
 

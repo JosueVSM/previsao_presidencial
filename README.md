@@ -24,12 +24,20 @@ multicamadas (MLP)** em PyTorch; métodos simples aparecem apenas como comparaç
 python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 
-python -m eleicao.pipeline tudo      # baixar → preparar → avaliar → prever → verificar
+streamlit run app.py                 # já abre, usando a amostra do repositório
+```
+
+Recém-clonado, o app abre sobre `amostra/` — um recorte dos resultados versionado junto com o
+código — e avisa disso na tela. Para reproduzir tudo a partir dos arquivos oficiais do TSE:
+
+```bash
+python -m eleicao.pipeline tudo      # baixar → preparar → avaliar → prever → verificar → amostra
 streamlit run app.py
 ```
 
 Etapas separadas: `baixar`, `preparar`, `avaliar` (validação temporal), `prever` (rede final + 2026),
-`verificar` (escala, consistência, vazamento). O download pode passar de 1 GB (arquivos de votação por
+`verificar` (escala, consistência, vazamento), `amostra` (regenera o recorte versionado).
+O download pode passar de 1 GB (arquivos de votação por
 zona trazem todos os cargos); a preparação filtra só Presidente. Em um computador comum, avaliação +
 previsão levam alguns minutos em CPU.
 
@@ -57,6 +65,8 @@ eleicao/avaliacao.py         validação temporal e previsão do ano-alvo
 eleicao/agregacao.py         agregação ponderada para UF e Brasil
 eleicao/pesquisas.py         registro de pesquisas do TSE e percentuais opcionais do usuário
 eleicao/verificacao.py       verificações automáticas
+eleicao/amostra.py           recorte versionado que faz o app abrir sem baixar nada
+amostra/                     esse recorte (vai no repositório, ao contrário de dados/ e resultados/)
 config/linhagem_partidos.csv tabela editável de sucessão de partidos
 dados/fontes.json            catálogo das fontes (gerado no download/preparação)
 dados/manual/                pesquisas_resultados.csv (opcional) e modelo do arquivo
@@ -178,8 +188,13 @@ mesma eleição nunca se dividem entre treino e teste.
 do erro quadrático médio (REQM) por município e candidato; EAM ponderado pelos votos; % de municípios em
 que o mais votado foi acertado; e erro do **agregado nacional** frente ao resultado oficial.
 
-**Comparações (complementares):** *persistência partidária* (repete a % do partido ou do candidato na
-eleição anterior no município, renormalizada entre os candidatos atuais) e *divisão igual*.
+**Comparações (complementares):** *persistência partidária* e *divisão igual*. A persistência
+repete, no mesmo município, a disputa anterior **do mesmo tipo de turno**: para um 1º turno, o 1º turno
+anterior (do partido pela linhagem ou do próprio candidato, o que for maior); para um 2º turno, o
+**2º turno anterior** sempre que o partido esteve nele, recaindo no 1º turno só quando não há 2º turno
+a repetir (caso do PSL em 2018). Medir um 2º turno contra as fatias de um 1º turno anterior
+enfraqueceria a referência artificialmente e faria a rede parecer melhor do que é. Todas as colunas
+vêm de T−4: a referência também não enxerga o ano previsto.
 
 **Limitação central:** há milhares de municípios, mas **pouquíssimas eleições independentes** (seis alvos de
 treino, quatro testes). Tudo o que é comum a uma eleição inteira — força nacional de um candidato novo, ondas
@@ -206,7 +221,10 @@ padrões confiáveis para 2026.
 ## 8. Agregação nacional e estadual
 
 `p_BR(c) = Σ_m W_m · p_m(c) / Σ_m W_m`, com `W_m = eleitorado apto do ano × (votos válidos ÷ aptos) do
-município na eleição anterior` — os **votos válidos esperados**. Justificativa: a % nacional oficial é
+município na eleição anterior` — os **votos válidos esperados**. A soma é feita **por candidato**
+(nome civil normalizado, que é estável); nome de urna e sigla são apenas rótulos, escolhidos depois
+pelo maior peso agregado. Se entrassem na chave do agrupamento, uma grafia diferente em alguns
+municípios partiria a mesma pessoa em duas linhas e o gráfico mostraria uma barra menor que a real. Justificativa: a % nacional oficial é
 `Σ votos(c) / Σ válidos`, que é exatamente a média das % municipais ponderada pelos votos válidos de cada
 município (um teste automático confirma essa identidade). Como os válidos do ano não são
 conhecidos antes da eleição, usa-se a estimativa acima. **A média simples entre municípios não é usada.**
