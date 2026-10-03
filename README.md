@@ -6,6 +6,12 @@ Matricula: 2517534
 Nome: Plinio Rodrigues
 Matricula: 2526504
 
+Nome: Marcos Paulo Pinto Chaves
+Matricula: 2516693
+
+Nome: Marcos Venicios de Andrade
+Matricula: 2517819
+
 Projeto de ciência de dados em Python que estima a **porcentagem de votos válidos** de cada candidato à
 Presidência do Brasil **por município**, agrega as estimativas por **estado** e **Brasil** e apresenta
 tudo numa interface **Streamlit** em português. A solução principal é uma **rede neural do tipo perceptron
